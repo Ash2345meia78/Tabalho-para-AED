@@ -1,0 +1,164 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+class Program
+{
+    // Define a lista de medicamentos usando tuplas
+    static List<(string Nome, string Validade, string Fabricante, string Forma, string Registro_ANVISA, string Numero_de_Lote, int Quantidade)> medicamentos = new List<(string, string, string, string, string, string, int)>();
+
+    static void Main(string[] args)
+    {
+        // Define a codificação de saída para UTF-8 para lidar com acentos e caracteres especiais
+        Console.OutputEncoding = Encoding.UTF8;
+
+        bool sair = false;
+        while (!sair)
+        {
+            // Exibe um menu de opções e executa a ação correspondente à opção escolhida pelo usuário.
+            Console.WriteLine("\nEscolha uma opção:");
+            Console.WriteLine("1 - Adicionar Medicamento");
+            Console.WriteLine("2 - Exibir Medicamentos");
+            Console.WriteLine("3 - Remover Medicamento");
+            Console.WriteLine("4 - Buscar Medicamento");
+            Console.WriteLine("5 - Editar Medicamento");
+            Console.WriteLine("6 - Sair");
+            string opcao = Console.ReadLine();
+
+            switch (opcao)
+            {
+                case "1":
+                    AdicionarMed();
+                    break;
+                case "2":
+                    ExibirMed();
+                    break;
+                case "3":
+                    RemoverMed();
+                    break;
+                case "4":
+                    BuscarMed();
+                    break;
+                case "5":
+                    EditarMed();
+                    break;
+                case "6":
+                    sair = true;
+                    break;
+                default:
+                    Console.WriteLine("Opção inválida.");
+                    break;
+            }
+        }
+    }
+
+    static void AdicionarMed()
+    {
+        // Solicita informações para registrar um medicamento e adiciona-o à lista.
+        Console.Write("Nome: ");
+        string nome = Console.ReadLine();
+
+        Console.Write("Validade: ");
+        string validade = Console.ReadLine();
+
+        Console.Write("Fabricante: ");
+        string fabricante = Console.ReadLine();
+
+        Console.Write("Forma Física: ");
+        string forma = Console.ReadLine();
+
+        Console.Write("Registro ANVISA: ");
+        string registroANVISA = Console.ReadLine();
+
+        Console.Write("Número do Lote: ");
+        string numeroDeLote = Console.ReadLine();
+
+        Console.Write("Quantidade: ");
+        int quantidade = Convert.ToInt32(Console.ReadLine());
+
+        medicamentos.Add((nome, validade, fabricante, forma, registroANVISA, numeroDeLote, quantidade));
+        Console.WriteLine("Medicamento adicionado com sucesso.");
+    }
+
+    static void ExibirMed()
+    {
+        // Exibe todos os medicamentos da lista.
+        foreach (var medicamento in medicamentos)
+        {
+            Console.WriteLine($"Nome: {medicamento.Nome}, \nValidade: {medicamento.Validade}, \nFabricante: {medicamento.Fabricante}, \nForma Física: {medicamento.Forma}, \nRegistro ANVISA: {medicamento.Registro_ANVISA}, \nNúmero do Lote: {medicamento.Numero_de_Lote}, \nQuantidade: {medicamento.Quantidade}");
+        }
+    }
+
+    static void RemoverMed()
+    {
+        // Remove um medicamento da lista, baseado no nome fornecido pelo usuário.
+        Console.Write("Digite o nome do medicamento a remover: ");
+        string nome = Console.ReadLine();
+        var medicamento = medicamentos.FirstOrDefault(m => m.Nome == nome);
+
+        if (!EqualityComparer<(string, string, string, string, string, string, int)>.Default.Equals(medicamento, default))
+        {
+            medicamentos.Remove(medicamento);
+            Console.WriteLine("Medicamento removido com sucesso.");
+        }
+        else
+        {
+            Console.WriteLine("Medicamento não encontrado.");
+        }
+    }
+
+    static void BuscarMed()
+    {
+        // Busca um medicamento na lista, baseado no nome fornecido pelo usuário, e exibe suas informações.
+        Console.Write("Digite o nome do medicamento a buscar: ");
+        string nome = Console.ReadLine();
+        var medicamento = medicamentos.FirstOrDefault(m => m.Nome == nome);
+
+        if (!EqualityComparer<(string, string, string, string, string, string, int)>.Default.Equals(medicamento, default))
+        {
+            Console.WriteLine($"Nome: {medicamento.Nome}, \nValidade: {medicamento.Validade}, \nFabricante: {medicamento.Fabricante}, \nForma Física: {medicamento.Forma}, \nRegistro ANVISA: {medicamento.Registro_ANVISA}, \nNúmero do Lote: {medicamento.Numero_de_Lote}, \nQuantidade: {medicamento.Quantidade}");
+        }
+        else
+        {
+            Console.WriteLine("Medicamento não encontrado.");
+        }
+    }
+
+    static void EditarMed()
+    {
+        // Edita as informações de um medicamento presente na lista.
+        Console.Write("Digite o nome do medicamento a editar: ");
+        string nome = Console.ReadLine();
+        var medicamento = medicamentos.FirstOrDefault(m => m.Nome == nome);
+
+        if (!EqualityComparer<(string, string, string, string, string, string, int)>.Default.Equals(medicamento, default))
+        {
+            Console.WriteLine("Digite as novas informações do medicamento:");
+
+            Console.Write("Validade: ");
+            medicamento.Validade = Console.ReadLine();
+
+            Console.Write("Fabricante: ");
+            medicamento.Fabricante = Console.ReadLine();
+
+            Console.Write("Forma Física: ");
+            medicamento.Forma = Console.ReadLine();
+
+            Console.Write("Registro ANVISA: ");
+            medicamento.Registro_ANVISA = Console.ReadLine();
+
+            Console.Write("Número do Lote: ");
+            medicamento.Numero_de_Lote = Console.ReadLine();
+
+            Console.Write("Quantidade: ");
+            medicamento.Quantidade = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Medicamento atualizado com sucesso.");
+        }
+        else
+        {
+            Console.WriteLine("Medicamento não encontrado.");
+        }
+    }
+}
